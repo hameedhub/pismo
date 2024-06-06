@@ -1,4 +1,4 @@
-package domain
+package model
 
 import (
 	"errors"
@@ -12,7 +12,7 @@ var (
 
 type Account struct {
 	gorm.Model
-	AccountID      uint64  `json:"account_id" gorm:"unique;primaryKey;autoIncrement"`
+	ID             uint64  `json:"account_id" gorm:"unique;primaryKey;autoIncrement"`
 	DocumentNumber string  `json:"document_number"`
 	Balance        float64 `json:"balance"`
 }
@@ -26,7 +26,7 @@ func (a *Account) IsValid() error {
 
 func (a *Account) NewAccount() Account {
 	return Account{
-		AccountID:      a.AccountID,
+		ID:             a.ID,
 		DocumentNumber: a.DocumentNumber,
 		Balance:        a.Balance,
 	}

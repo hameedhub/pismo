@@ -2,7 +2,8 @@ package database
 
 import (
 	"fmt"
-	"github.com/hameedhub/pismo/internal/account/domain"
+	"github.com/hameedhub/pismo/internal/model"
+
 	"github.com/hameedhub/pismo/internal/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -18,7 +19,7 @@ func Run(c config.Config) *gorm.DB {
 	if err != nil {
 		log.Fatal("Database connection error: ", err)
 	}
-	err = db.AutoMigrate(&domain.Account{})
+	err = db.AutoMigrate(&model.Account{})
 	if err != nil {
 		log.Fatal("Migration error: ", err)
 	}
