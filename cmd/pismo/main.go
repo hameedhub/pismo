@@ -1,7 +1,7 @@
 package main
 
-import "fmt"
-
 func main() {
-	fmt.Println("Hello Wold")
+	//cfg := config.ReadConfig("dev")
+	//db := database.Run(cfg)
+
 }

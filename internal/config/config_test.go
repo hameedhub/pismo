@@ -16,8 +16,8 @@ const (
 
 func TestConfigDefaults(t *testing.T) {
 	viper.Reset()
-	path := "../../"
-	cfg := ReadConfig(path, "dev")
+
+	cfg := ReadConfig("dev")
 	fmt.Println(cfg.DBHost)
 	assert.Equal(t, Host, cfg.DBHost, "host not equal")
 	assert.Equal(t, User, cfg.DBUser, "user not equal")

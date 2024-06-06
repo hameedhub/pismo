@@ -3,10 +3,13 @@ package config
 import (
 	"github.com/spf13/viper"
 	"log"
+	"path/filepath"
 )
 
-func ReadConfig(path, env string) (c Config) {
-	viper.AddConfigPath(path)
+const path = "../../"
+
+func ReadConfig(env string) (c Config) {
+	viper.AddConfigPath(filepath.Dir(path))
 	viper.SetConfigName(env)
 	viper.SetConfigType("env")
 

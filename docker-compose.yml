@@ -1,10 +1,10 @@
 version: "3.8"
 
 services:
-  postgres:
+  db:
     image: postgres:latest
     environment:
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=pismo
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
