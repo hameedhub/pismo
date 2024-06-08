@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"github.com/spf13/viper"
 	"log"
 	"path/filepath"
@@ -9,6 +10,7 @@ import (
 const path = "../../"
 
 func ReadConfig(env string) (c Config) {
+	fmt.Println(filepath.Dir(path))
 	viper.AddConfigPath(filepath.Dir(path))
 	viper.SetConfigName(env)
 	viper.SetConfigType("env")
