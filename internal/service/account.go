@@ -9,7 +9,7 @@ import (
 
 type AccountService interface {
 	Create(account model.Account) (model.Account, error)
-	GetById(id uint64) (model.Account, error)
+	GetById(id int) (model.Account, error)
 }
 
 type accountService struct {
@@ -27,7 +27,7 @@ func (as accountService) Create(account model.Account) (model.Account, error) {
 	return account, errors.New("document number already exist")
 }
 
-func (as accountService) GetById(id uint64) (model.Account, error) {
+func (as accountService) GetById(id int) (model.Account, error) {
 	return as.repo.AccountRepository.GetByID(id)
 }
 

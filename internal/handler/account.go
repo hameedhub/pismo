@@ -2,9 +2,11 @@ package handler
 
 import (
 	"errors"
+	"github.com/gorilla/mux"
 	"github.com/hameedhub/pismo/internal/model"
 	"github.com/hameedhub/pismo/internal/service"
 	"net/http"
+	"strconv"
 )
 
 type AccountHandler interface {
@@ -18,13 +20,13 @@ type accountHandler struct {
 
 func (a accountHandler) Create(w http.ResponseWriter, r *http.Request) {
 	var account model.Account
-	err := FromJSON(&account, r.Body)
-	if err := account.IsValid(); err != nil {
-		Response(w, http.StatusBadRequest, errors.New("document_number required"))
-	}
-
-	if err != nil {
+	if err := FromJSON(&account, r.Body); err != nil {
 		Response(w, http.StatusInternalServerError, errors.New("internal server error"))
+		return
+	}
+	if err := account.IsValid(); err != nil {
+		Response(w, http.StatusBadRequest, errors.New("document_number required").Error())
+		return
 	}
 	create, err := a.accountService.Create(account)
 	if err != nil {
@@ -35,7 +37,18 @@ func (a accountHandler) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a accountHandler) GetById(w http.ResponseWriter, r *http.Request) {
-
+	params := mux.Vars(r)
+	id, err := strconv.Atoi(params["id"])
+	if err != nil {
+		Response(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	account, err := a.accountService.GetById(id)
+	if err != nil {
+		Response(w, http.StatusNotFound, err.Error())
+		return
+	}
+	Response(w, http.StatusOK, account)
 }
 
 func NewAccountHandler(as service.AccountService) AccountHandler {

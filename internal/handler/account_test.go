@@ -2,6 +2,7 @@ package handler
 
 import (
 	"bytes"
+	"github.com/gorilla/mux"
 	"github.com/hameedhub/pismo/internal/config"
 	"github.com/hameedhub/pismo/internal/model"
 	"github.com/hameedhub/pismo/internal/repository"
@@ -84,4 +85,46 @@ func TestAccountHandler_Create_Existing(t *testing.T) {
 	if resp.Code != http.StatusConflict {
 		t.Errorf("expected status %v; got %v", http.StatusBadRequest, resp.Code)
 	}
+}
+func TestAccountHandler_GetById_NotFound(t *testing.T) {
+	db, cleanup := setupTestEnvironment(t)
+	defer cleanup()
+	accountService := service.NewAccountService(repository.Init(db))
+	handler := NewAccountHandler(accountService)
+	router := mux.NewRouter()
+	router.HandleFunc("/accounts/{id}", handler.GetById).Methods(http.MethodGet)
+
+	req := httptest.NewRequest(http.MethodGet, "/accounts/1", nil) // GET requests usually have no body.
+	resp := httptest.NewRecorder()
+
+	router.ServeHTTP(resp, req)
+
+	if resp.Code != http.StatusNotFound {
+		t.Errorf("expected status %v; got %v", http.StatusNotFound, resp.Code)
+	}
+}
+
+func TestAccountHandler_GetById(t *testing.T) {
+	db, cleanup := setupTestEnvironment(t)
+	defer cleanup()
+	accountService := service.NewAccountService(repository.Init(db))
+	handler := NewAccountHandler(accountService)
+
+	req, resp := createRequestAndRecorder(body)
+	handler.Create(resp, req)
+	if resp.Code != http.StatusCreated {
+		t.Errorf("expected status %v; got %v", http.StatusCreated, resp.Code)
+	}
+	router := mux.NewRouter()
+	router.HandleFunc("/accounts/{id}", handler.GetById).Methods(http.MethodGet)
+
+	req = httptest.NewRequest(http.MethodGet, "/accounts/1", nil) // GET requests usually have no body.
+	resp = httptest.NewRecorder()
+
+	router.ServeHTTP(resp, req)
+
+	if resp.Code != http.StatusOK {
+		t.Errorf("expected status %v; got %v", http.StatusOK, resp.Code)
+	}
+
 }

@@ -12,7 +12,7 @@ var (
 
 type Account struct {
 	gorm.Model
-	ID             uint64  `json:"account_id" gorm:"unique;primaryKey;autoIncrement"`
+	ID             int     `json:"account_id" gorm:"unique;primaryKey;autoIncrement"`
 	DocumentNumber string  `json:"document_number"`
 	Balance        float64 `json:"balance"`
 }

@@ -6,7 +6,7 @@ import (
 )
 
 type AccountRepository interface {
-	GetByID(id uint64) (model.Account, error)
+	GetByID(id int) (model.Account, error)
 	GetByDocumentNumber(docNum string) (model.Account, error)
 	Create(user model.Account) (model.Account, error)
 }
@@ -15,7 +15,7 @@ type accountRepository struct {
 	db *gorm.DB
 }
 
-func (a accountRepository) GetByID(id uint64) (model.Account, error) {
+func (a accountRepository) GetByID(id int) (model.Account, error) {
 	var account model.Account
 	err := a.db.First(&account, id).Error
 	return account, err
