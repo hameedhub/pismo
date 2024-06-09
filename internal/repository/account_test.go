@@ -12,6 +12,7 @@ import (
 )
 
 func SetupMock(t *testing.T) (*sql.DB, sqlmock.Sqlmock, *gorm.DB) {
+	t.Helper()
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatal("db mock error")
