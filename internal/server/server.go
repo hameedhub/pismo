@@ -7,6 +7,7 @@ import (
 	"github.com/hameedhub/pismo/internal/config"
 	"github.com/hameedhub/pismo/internal/server/middleware"
 	"github.com/hameedhub/pismo/internal/service"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"log"
 	"net/http"
 	"os"
@@ -25,6 +26,8 @@ type Server struct {
 func NewServer(cfg config.Config, service *service.Service) *Server {
 	router := mux.NewRouter()
 	server := &Server{cfg: cfg, router: router}
+
+	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
 	router.Use(middleware.LoggerMiddleware)
 	router.Use(middleware.HeaderMiddleware)

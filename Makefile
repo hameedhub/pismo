@@ -18,3 +18,6 @@ fmt:
 clean:
 	@go clean
 	@rm -f $(APP_NAME)
+
+swag-gen:
+	@swag init -g cmd/pismo/main.go --parseDependency --parseInternal --parseDepth 3

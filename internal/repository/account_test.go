@@ -30,7 +30,7 @@ func TestAccountRepo_GetByID(t *testing.T) {
 	db, mock, gormDb := SetupMock(t)
 	defer db.Close()
 
-	id := uint64(1)
+	id := 1
 	expected := model.Account{ID: id, DocumentNumber: "3382098032", Balance: 0}
 	rows := sqlmock.NewRows([]string{"id", "document_number", "balance"}).AddRow(expected.ID, expected.DocumentNumber, expected.Balance)
 	mock.ExpectQuery("^SELECT \\* FROM \"accounts\" WHERE \"accounts\"\\.\"id\" = \\$1 AND \"accounts\"\\.\"deleted_at\" IS NULL ORDER BY \"accounts\"\\.\"id\" LIMIT \\$2").WithArgs(id, 1).WillReturnRows(rows)

@@ -18,7 +18,7 @@ func TestInit(t *testing.T) {
 
 	repo := Init(gormDb)
 
-	if repo == nil || repo.AccountRepo == nil {
+	if repo == nil || repo.AccountRepository == nil {
 		t.Fatalf("fail to initialize repo.")
 	}
 }
