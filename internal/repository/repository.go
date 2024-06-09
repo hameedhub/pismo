@@ -3,10 +3,10 @@ package repository
 import "gorm.io/gorm"
 
 type IRepository struct {
-	AccountRepo *AccountRepo
+	AccountRepository AccountRepository
 }
 
 func Init(db *gorm.DB) *IRepository {
-	accountRepo := NewAccountRepository(db)
-	return &IRepository{AccountRepo: accountRepo}
+	AccountRepository := NewAccountRepository(db)
+	return &IRepository{AccountRepository: AccountRepository}
 }

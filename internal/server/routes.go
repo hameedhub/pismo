@@ -1,9 +1,16 @@
 package server
 
-import "net/http"
+import (
+	"github.com/hameedhub/pismo/internal/handler"
+	"github.com/hameedhub/pismo/internal/service"
+	"net/http"
+)
 
-func (s *Server) Routes() {
+func (s *Server) Routes(service service.Service) {
+	accounts := handler.NewAccountHandler(service.AccountService)
+
 	s.router.HandleFunc("/health", healthCheck).Methods(http.MethodGet)
+	s.router.HandleFunc("/account", accounts.Create).Methods(http.MethodPost)
 }
 
 func healthCheck(w http.ResponseWriter, r *http.Request) {

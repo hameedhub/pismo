@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/hameedhub/pismo/internal/config"
 	"github.com/hameedhub/pismo/internal/server/middleware"
+	"github.com/hameedhub/pismo/internal/service"
 	"log"
 	"net/http"
 	"os"
@@ -15,19 +16,20 @@ import (
 )
 
 type Server struct {
-	cfg    config.Config
-	router *mux.Router
-	server *http.Server
+	cfg     config.Config
+	router  *mux.Router
+	server  *http.Server
+	service service.Service
 }
 
-func NewServer(cfg config.Config) *Server {
+func NewServer(cfg config.Config, service *service.Service) *Server {
 	router := mux.NewRouter()
 	server := &Server{cfg: cfg, router: router}
 
 	router.Use(middleware.LoggerMiddleware)
 	router.Use(middleware.HeaderMiddleware)
 
-	server.Routes()
+	server.Routes(*service)
 	return server
 }
 
