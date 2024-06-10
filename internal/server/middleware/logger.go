@@ -7,8 +7,7 @@ import (
 
 func LoggerMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Println(r.ContentLength)
-		// log services request here...
+		log.Printf("Received request: %s %s from %s", r.Method, r.RequestURI, r.UserAgent())
 		next.ServeHTTP(w, r)
 	})
 }
