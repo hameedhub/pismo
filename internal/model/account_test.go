@@ -21,7 +21,7 @@ func TestAccount_IsValid(t *testing.T) {
 func TestAccount_Is_Not_Valid(t *testing.T) {
 	account.DocumentNumber = ""
 	got := account.IsValid()
-	if !errors.Is(got, ErrDocumentNumberEmpty) {
+	if !errors.Is(got, ErrDocumentNumberInvalid) {
 		t.Errorf("TestIsNotValid failed")
 	}
 }

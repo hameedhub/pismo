@@ -39,7 +39,7 @@ func (a accountHandler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 	account := model.Account{DocumentNumber: req.DocumentNumber}
 	if err := account.IsValid(); err != nil {
-		ErrorResponse(w, http.StatusBadRequest, errors.New("document_number required").Error())
+		ErrorResponse(w, http.StatusBadRequest, err.Error())
 		return
 	}
 	create, err := a.accountService.Create(account)

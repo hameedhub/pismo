@@ -7,6 +7,7 @@ import (
 	"github.com/hameedhub/pismo/internal/repository/database"
 	"github.com/hameedhub/pismo/internal/server"
 	"github.com/hameedhub/pismo/internal/service"
+	"path/filepath"
 )
 
 // @title           Swagger Pismo API
@@ -16,7 +17,8 @@ import (
 // @host      localhost:8080
 // @BasePath  /
 func main() {
-	cfg := config.ReadConfig("../../")
+	path := filepath.Join("..", "..")
+	cfg := config.ReadConfig(path)
 	db := database.Run(cfg)
 	repo := repository.Init(db)
 	svc := service.Init(repo)

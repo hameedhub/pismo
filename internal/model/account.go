@@ -3,11 +3,11 @@ package model
 import (
 	"errors"
 	"gorm.io/gorm"
-	"strings"
+	"strconv"
 )
 
 var (
-	ErrDocumentNumberEmpty = errors.New("document number can't be empty")
+	ErrDocumentNumberInvalid = errors.New("invalid document number")
 )
 
 type Account struct {
@@ -18,8 +18,9 @@ type Account struct {
 }
 
 func (a *Account) IsValid() error {
-	if len(strings.TrimSpace(a.DocumentNumber)) == 0 {
-		return ErrDocumentNumberEmpty
+	_, err := strconv.Atoi(a.DocumentNumber)
+	if len(a.DocumentNumber) < 3 || err != nil {
+		return ErrDocumentNumberInvalid
 	}
 	return nil
 }

@@ -34,14 +34,15 @@ func setupTestEnvironment(t *testing.T) (*gorm.DB, func()) {
 		sqlDB.Close()
 	}
 }
+
+const validBody = `{"document_number":"12332231"}`
+const invalidBody = `{"document_number":""}`
+
 func createRequestAndRecorder(body string) (*http.Request, *httptest.ResponseRecorder) {
 	req := httptest.NewRequest(http.MethodPost, "/accounts", bytes.NewBufferString(body))
 	resp := httptest.NewRecorder()
 	return req, resp
 }
-
-const body = `{"document_number":"12332231"}`
-const invalidBody = `{"document_number":""}`
 
 func TestAccountHandler_Create_Invalid(t *testing.T) {
 	db, cleanup := setupTestEnvironment(t)
@@ -61,7 +62,7 @@ func TestAccountHandler_Create(t *testing.T) {
 	accountService := service.NewAccountService(repository.Init(db))
 	handler := NewAccountHandler(accountService)
 
-	req, resp := createRequestAndRecorder(body)
+	req, resp := createRequestAndRecorder(validBody)
 	handler.Create(resp, req)
 	if resp.Code != http.StatusCreated {
 		t.Errorf("expected status %v; got %v", http.StatusCreated, resp.Code)
@@ -74,12 +75,12 @@ func TestAccountHandler_Create_Existing(t *testing.T) {
 	accountService := service.NewAccountService(repository.Init(db))
 	handler := NewAccountHandler(accountService)
 
-	req, resp := createRequestAndRecorder(body)
+	req, resp := createRequestAndRecorder(validBody)
 	handler.Create(resp, req)
 	if resp.Code != http.StatusCreated {
 		t.Errorf("expected status %v; got %v", http.StatusCreated, resp.Code)
 	}
-	req, resp = createRequestAndRecorder(body)
+	req, resp = createRequestAndRecorder(validBody)
 	handler.Create(resp, req)
 	if resp.Code != http.StatusConflict {
 		t.Errorf("expected status %v; got %v", http.StatusConflict, resp.Code)
@@ -109,7 +110,7 @@ func TestAccountHandler_GetById(t *testing.T) {
 	accountService := service.NewAccountService(repository.Init(db))
 	handler := NewAccountHandler(accountService)
 
-	req, resp := createRequestAndRecorder(body)
+	req, resp := createRequestAndRecorder(validBody)
 	handler.Create(resp, req)
 	if resp.Code != http.StatusCreated {
 		t.Errorf("expected status %v; got %v", http.StatusCreated, resp.Code)
