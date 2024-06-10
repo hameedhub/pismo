@@ -5,10 +5,13 @@ import (
 )
 
 type Service struct {
-	AccountService AccountService
+	AccountService     AccountService
+	TransactionService TransactionService
 }
 
 func Init(repo *repository.IRepository) *Service {
 	as := NewAccountService(repo)
-	return &Service{AccountService: as}
+	ts := NewTransactionService(repo)
+	return &Service{AccountService: as,
+		TransactionService: ts}
 }

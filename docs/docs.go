@@ -30,13 +30,12 @@ const docTemplate = `{
                 "summary": "Create a new account",
                 "parameters": [
                     {
-                        "example": "\"{\\\"document_number\\\": \\\"123456789\\\"}\"",
                         "description": "Create Account",
                         "name": "account",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_hameedhub_pismo_internal_model.Account"
                         }
                     }
                 ],
@@ -78,6 +77,40 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/transactions": {
+            "post": {
+                "description": "Create a new transaction with the input payload",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transactions"
+                ],
+                "summary": "Create a new transaction",
+                "parameters": [
+                    {
+                        "description": "Create Transaction",
+                        "name": "account",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hameedhub_pismo_internal_model.Transaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hameedhub_pismo_internal_model.Transaction"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -100,6 +133,35 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_hameedhub_pismo_internal_model.Transaction": {
+            "type": "object",
+            "properties": {
+                "account_id": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "event_date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "operation_type_id": {
+                    "type": "integer"
+                },
+                "transaction_id": {
                     "type": "integer"
                 },
                 "updatedAt": {

@@ -52,7 +52,7 @@ func TestAccountHandler_Create_Invalid(t *testing.T) {
 	req, resp := createRequestAndRecorder(invalidBody)
 	handler.Create(resp, req)
 	if resp.Code != http.StatusBadRequest {
-		t.Errorf("expected status %v; got %v", http.StatusCreated, resp.Code)
+		t.Errorf("expected status %v; got %v", http.StatusBadRequest, resp.Code)
 	}
 }
 func TestAccountHandler_Create(t *testing.T) {
@@ -74,7 +74,6 @@ func TestAccountHandler_Create_Existing(t *testing.T) {
 	accountService := service.NewAccountService(repository.Init(db))
 	handler := NewAccountHandler(accountService)
 
-	body := `{"document_number":"12332231"}`
 	req, resp := createRequestAndRecorder(body)
 	handler.Create(resp, req)
 	if resp.Code != http.StatusCreated {
@@ -83,7 +82,7 @@ func TestAccountHandler_Create_Existing(t *testing.T) {
 	req, resp = createRequestAndRecorder(body)
 	handler.Create(resp, req)
 	if resp.Code != http.StatusConflict {
-		t.Errorf("expected status %v; got %v", http.StatusBadRequest, resp.Code)
+		t.Errorf("expected status %v; got %v", http.StatusConflict, resp.Code)
 	}
 }
 func TestAccountHandler_GetById_NotFound(t *testing.T) {

@@ -19,7 +19,7 @@ func Run(c config.Config) *gorm.DB {
 	if err != nil {
 		log.Fatal("Database connection error: ", err)
 	}
-	err = db.AutoMigrate(&model.Account{})
+	err = db.AutoMigrate(&model.Account{}, &model.Transaction{})
 	if err != nil {
 		log.Fatal("Migration error: ", err)
 	}
