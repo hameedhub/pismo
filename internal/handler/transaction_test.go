@@ -19,12 +19,12 @@ func TestTransactionHandler_Create(t *testing.T) {
 	transactionService := service.NewTransactionService(repository.Init(db))
 	handler := NewTransactionHandler(transactionService)
 
-	req, resp := createRequestAndRecorder(body)
+	req, resp := createRequestAndRecorder(validBody)
 	handlerAccount.Create(resp, req)
 	if resp.Code != http.StatusCreated {
 		t.Errorf("expected status %v; got %v", http.StatusCreated, resp.Code)
 	}
-	
+
 	req, resp = createRequestAndRecorder(transaction)
 	handler.Create(resp, req)
 	if resp.Code != http.StatusCreated {

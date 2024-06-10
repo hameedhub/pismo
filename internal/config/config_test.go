@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/magiconair/properties/assert"
 	"github.com/spf13/viper"
+	"path/filepath"
 	"testing"
 )
 
@@ -16,7 +17,8 @@ const (
 func TestReadConfig(t *testing.T) {
 	viper.Reset()
 
-	cfg := ReadConfig("../../")
+	path := filepath.Join("..", "..")
+	cfg := ReadConfig(path)
 	assert.Equal(t, Host, cfg.DBHost, "host not equal")
 	assert.Equal(t, User, cfg.DBUser, "user not equal")
 	assert.Equal(t, Password, cfg.DBPassword, "password not equal")
