@@ -15,7 +15,7 @@ import (
 )
 
 func setupDatabase() (*gorm.DB, error) {
-	cfg := config.ReadConfig("test")
+	cfg := config.ReadConfig("../../")
 	return database.Run(cfg), nil
 }
 func setupTestEnvironment(t *testing.T) (*gorm.DB, func()) {

@@ -1,18 +1,14 @@
 package config
 
 import (
-	"fmt"
 	"github.com/spf13/viper"
 	"log"
-	"path/filepath"
 )
 
-const path = "../../"
-
-func ReadConfig(env string) (c Config) {
-	fmt.Println(filepath.Dir(path))
-	viper.AddConfigPath(filepath.Dir(path))
-	viper.SetConfigName(env)
+func ReadConfig(path string) (c Config) {
+	viper.AddConfigPath(path)
+	viper.AddConfigPath("/app/")
+	viper.SetConfigName(".env")
 	viper.SetConfigType("env")
 
 	viper.AutomaticEnv()
