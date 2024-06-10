@@ -1,0 +1,105 @@
+basePath: /
+definitions:
+  github_com_hameedhub_pismo_internal_handler_dto.AccountRequest:
+    properties:
+      document_number:
+        type: string
+    type: object
+  github_com_hameedhub_pismo_internal_handler_dto.AccountResponse:
+    properties:
+      account_id:
+        type: integer
+      document_number:
+        type: string
+    type: object
+  github_com_hameedhub_pismo_internal_handler_dto.TransactionRequest:
+    properties:
+      account_id:
+        type: integer
+      amount:
+        type: number
+      operation_type_id:
+        type: integer
+    type: object
+  github_com_hameedhub_pismo_internal_handler_dto.TransactionResponse:
+    properties:
+      account_id:
+        type: integer
+      amount:
+        type: number
+      operation_type_id:
+        type: integer
+      transaction_id:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a pismo server.
+  title: Swagger Pismo API
+  version: "1.0"
+paths:
+  /accounts:
+    post:
+      consumes:
+      - application/json
+      description: Create a new account with the input payload
+      parameters:
+      - description: Create Account
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hameedhub_pismo_internal_handler_dto.AccountRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_hameedhub_pismo_internal_handler_dto.AccountResponse'
+      summary: Create a new account
+      tags:
+      - accounts
+  /accounts/{id}:
+    get:
+      description: Get details of an account corresponding to the input ID
+      parameters:
+      - description: Account ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_hameedhub_pismo_internal_handler_dto.AccountResponse'
+      summary: Get an account by ID
+      tags:
+      - accounts
+  /transactions:
+    post:
+      consumes:
+      - application/json
+      description: Create a new transaction with the input payload
+      parameters:
+      - description: Create Transaction
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hameedhub_pismo_internal_handler_dto.TransactionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_hameedhub_pismo_internal_handler_dto.TransactionResponse'
+      summary: Create a new transaction
+      tags:
+      - transactions
+swagger: "2.0"
