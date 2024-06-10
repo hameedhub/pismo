@@ -3,6 +3,7 @@ package handler
 import (
 	"errors"
 	"github.com/gorilla/mux"
+	"github.com/hameedhub/pismo/internal/handler/dto"
 	"github.com/hameedhub/pismo/internal/model"
 	"github.com/hameedhub/pismo/internal/service"
 	"net/http"
@@ -24,15 +25,16 @@ type accountHandler struct {
 // @Tags accounts
 // @Accept  json
 // @Produce  json
-// @Param   account  body      model.Account  true  "Create Account"
-// @Success 201 {object} model.Account
+// @Param   account  body  dto.AccountRequest  true  "Create Account"
+// @Success 201 {object} dto.AccountResponse
 // @Router /accounts [post]
 func (a accountHandler) Create(w http.ResponseWriter, r *http.Request) {
-	var account model.Account
-	if err := FromJSON(&account, r.Body); err != nil {
+	var req dto.AccountRequest
+	if err := FromJSON(&req, r.Body); err != nil {
 		Response(w, http.StatusInternalServerError, errors.New("internal server error"))
 		return
 	}
+	account := model.Account{DocumentNumber: req.DocumentNumber}
 	if err := account.IsValid(); err != nil {
 		Response(w, http.StatusBadRequest, errors.New("document_number required").Error())
 		return
@@ -42,7 +44,7 @@ func (a accountHandler) Create(w http.ResponseWriter, r *http.Request) {
 		Response(w, http.StatusConflict, err.Error())
 		return
 	}
-	Response(w, http.StatusCreated, create)
+	Response(w, http.StatusCreated, dto.AccountResponse{ID: create.ID, DocumentNumber: create.DocumentNumber})
 }
 
 // GetById godoc
@@ -51,7 +53,7 @@ func (a accountHandler) Create(w http.ResponseWriter, r *http.Request) {
 // @Tags accounts
 // @Produce  json
 // @Param   id  path      int  true  "Account ID"
-// @Success 200 {object} model.Account
+// @Success 200 {object} dto.AccountResponse
 // @Router /accounts/{id} [get]
 func (a accountHandler) GetById(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
@@ -60,12 +62,12 @@ func (a accountHandler) GetById(w http.ResponseWriter, r *http.Request) {
 		Response(w, http.StatusBadRequest, err.Error())
 		return
 	}
-	account, err := a.accountService.GetById(id)
+	acc, err := a.accountService.GetById(id)
 	if err != nil {
 		Response(w, http.StatusNotFound, err.Error())
 		return
 	}
-	Response(w, http.StatusOK, account)
+	Response(w, http.StatusOK, dto.AccountResponse{ID: acc.ID, DocumentNumber: acc.DocumentNumber})
 }
 
 func NewAccountHandler(as service.AccountService) AccountHandler {

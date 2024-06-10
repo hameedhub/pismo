@@ -35,7 +35,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_hameedhub_pismo_internal_model.Account"
+                            "$ref": "#/definitions/github_com_hameedhub_pismo_internal_handler_dto.AccountRequest"
                         }
                     }
                 ],
@@ -43,7 +43,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/github_com_hameedhub_pismo_internal_model.Account"
+                            "$ref": "#/definitions/github_com_hameedhub_pismo_internal_handler_dto.AccountResponse"
                         }
                     }
                 }
@@ -72,7 +72,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_hameedhub_pismo_internal_model.Account"
+                            "$ref": "#/definitions/github_com_hameedhub_pismo_internal_handler_dto.AccountResponse"
                         }
                     }
                 }
@@ -98,7 +98,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_hameedhub_pismo_internal_model.Transaction"
+                            "$ref": "#/definitions/github_com_hameedhub_pismo_internal_handler_dto.TransactionRequest"
                         }
                     }
                 ],
@@ -106,7 +106,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/github_com_hameedhub_pismo_internal_model.Transaction"
+                            "$ref": "#/definitions/github_com_hameedhub_pismo_internal_handler_dto.TransactionResponse"
                         }
                     }
                 }
@@ -114,70 +114,53 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "github_com_hameedhub_pismo_internal_model.Account": {
+        "github_com_hameedhub_pismo_internal_handler_dto.AccountRequest": {
             "type": "object",
             "properties": {
-                "account_id": {
-                    "type": "integer"
-                },
-                "balance": {
-                    "type": "number"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
-                },
                 "document_number": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "updatedAt": {
                     "type": "string"
                 }
             }
         },
-        "github_com_hameedhub_pismo_internal_model.Transaction": {
+        "github_com_hameedhub_pismo_internal_handler_dto.AccountResponse": {
             "type": "object",
             "properties": {
                 "account_id": {
                     "type": "integer"
                 },
-                "createdAt": {
+                "document_number": {
                     "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
-                },
-                "event_date": {
-                    "type": "string"
-                },
-                "id": {
+                }
+            }
+        },
+        "github_com_hameedhub_pismo_internal_handler_dto.TransactionRequest": {
+            "type": "object",
+            "properties": {
+                "account_id": {
                     "type": "integer"
+                },
+                "amount": {
+                    "type": "number"
+                },
+                "operation_type_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_hameedhub_pismo_internal_handler_dto.TransactionResponse": {
+            "type": "object",
+            "properties": {
+                "account_id": {
+                    "type": "integer"
+                },
+                "amount": {
+                    "type": "number"
                 },
                 "operation_type_id": {
                     "type": "integer"
                 },
                 "transaction_id": {
                     "type": "integer"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "gorm.DeletedAt": {
-            "type": "object",
-            "properties": {
-                "time": {
-                    "type": "string"
-                },
-                "valid": {
-                    "description": "Valid is true if Time is not NULL",
-                    "type": "boolean"
                 }
             }
         }

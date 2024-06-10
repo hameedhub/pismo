@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/hameedhub/pismo/internal/handler/dto"
 	"github.com/hameedhub/pismo/internal/model"
 	"github.com/hameedhub/pismo/internal/service"
 	"net/http"
@@ -20,21 +21,21 @@ type transactionHandler struct {
 // @Tags transactions
 // @Accept  json
 // @Produce  json
-// @Param   account  body      model.Transaction  true  "Create Transaction"
-// @Success 201 {object} model.Transaction
+// @Param   account  body      dto.TransactionRequest  true  "Create Transaction"
+// @Success 201 {object} dto.TransactionResponse
 // @Router /transactions [post]
 func (t transactionHandler) Create(w http.ResponseWriter, r *http.Request) {
-	var transaction model.Transaction
-	if err := FromJSON(&transaction, r.Body); err != nil {
+	var req dto.TransactionRequest
+	if err := FromJSON(&req, r.Body); err != nil {
 		Response(w, http.StatusBadRequest, err.Error())
 		return
 	}
-	trans, err := t.transactionService.Create(transaction)
+	trans, err := t.transactionService.Create(model.Transaction{AccountId: req.AccountId, OperationTypeId: req.OperationTypeId, Amount: req.Amount})
 	if err != nil {
 		Response(w, http.StatusBadRequest, err.Error())
 		return
 	}
-	Response(w, http.StatusCreated, trans)
+	Response(w, http.StatusCreated, dto.TransactionResponse{ID: trans.ID, AccountId: trans.AccountId, OperationTypeId: trans.OperationTypeId, Amount: trans.Amount})
 }
 
 func NewTransactionHandler(ts service.TransactionService) TransactionHandler {

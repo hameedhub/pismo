@@ -17,6 +17,7 @@ type Transaction struct {
 	ID              int       `json:"transaction_id" gorm:"unique;primaryKey;autoIncrement"`
 	AccountId       int       `json:"account_id"`
 	OperationTypeId int       `json:"operation_type_id"`
+	Amount          float32   `json:"amount"`
 	CreatedAt       time.Time `json:"event_date"`
 }
 
@@ -25,5 +26,6 @@ func (a *Transaction) NewTransaction() Transaction {
 		ID:              a.ID,
 		AccountId:       a.AccountId,
 		OperationTypeId: a.OperationTypeId,
+		Amount:          a.Amount,
 	}
 }

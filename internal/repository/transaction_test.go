@@ -15,18 +15,20 @@ func TestAccountRepository_Create(t *testing.T) {
 	newTransaction := model.Transaction{
 		OperationTypeId: 1,
 		AccountId:       1,
+		Amount:          10.0,
 	}
 	expectedTransaction := newTransaction
 	expectedTransaction.ID = 1
 
 	mock.ExpectBegin()
-	mock.ExpectQuery(regexp.QuoteMeta(`INSERT INTO "transactions" ("created_at","updated_at","deleted_at","account_id","operation_type_id") VALUES ($1,$2,$3,$4,$5) RETURNING "id"`)).
+	mock.ExpectQuery(regexp.QuoteMeta(`INSERT INTO "transactions" ("created_at","updated_at","deleted_at","account_id","operation_type_id","amount") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "id"`)).
 		WithArgs(
 			sqlmock.AnyArg(),
 			sqlmock.AnyArg(),
 			nil,
 			1,
 			1,
+			10.0,
 		).WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(expectedTransaction.ID))
 	mock.ExpectCommit()
 	repo := NewTransactionRepository(gormDb)

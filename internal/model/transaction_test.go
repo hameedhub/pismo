@@ -9,6 +9,7 @@ var transaction = Transaction{
 	ID:              1,
 	AccountId:       1,
 	OperationTypeId: 1,
+	Amount:          10,
 }
 
 func TestTransaction_NewTransaction(t *testing.T) {
