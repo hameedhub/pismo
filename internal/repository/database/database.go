@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"github.com/hameedhub/pismo/internal/model"
+	"github.com/hameedhub/pismo/internal/repository/database/seeder"
 
 	"github.com/hameedhub/pismo/internal/config"
 	"gorm.io/driver/postgres"
@@ -19,9 +20,13 @@ func Run(c config.Config) *gorm.DB {
 	if err != nil {
 		log.Fatal("Database connection error: ", err)
 	}
-	err = db.AutoMigrate(&model.Account{}, &model.Transaction{})
+	err = db.AutoMigrate(&model.Account{}, &model.Transaction{}, &model.OperationType{})
 	if err != nil {
 		log.Fatal("Migration error: ", err)
+	}
+	err = seeder.OperationTypes(db)
+	if err != nil {
+		log.Fatal("Operation types seeds error: ", err)
 	}
 
 	return db
