@@ -16,7 +16,7 @@ import (
 // @host      localhost:8080
 // @BasePath  /
 func main() {
-	cfg := config.ReadConfig("dev")
+	cfg := config.ReadConfig("../../")
 	db := database.Run(cfg)
 	repo := repository.Init(db)
 	svc := service.Init(repo)

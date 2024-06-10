@@ -1,13 +1,39 @@
+
 version: "3.8"
 
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    command: sh -c "sleep 10 && ./pismo"
+    environment:
+      DB_HOST: db
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_PORT: ${DB_PORT}
+      SERVER_PORT: ${SERVER_PORT}
+      SERVER_IDLE_TIMEOUT: ${SERVER_IDLE_TIMEOUT}
+      SERVER_READ_TIMEOUT: ${SERVER_READ_TIMEOUT}
+      SERVER_WRITE_TIMEOUT: ${SERVER_WRITE_TIMEOUT}
+    env_file:
+      - ./.env
+
   db:
     image: postgres:latest
     environment:
-      - POSTGRES_DB=pismo
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "5432:5432"
+      - "${DB_PORT}:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
 volumes:
   db_data:
