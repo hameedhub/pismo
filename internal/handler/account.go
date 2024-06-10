@@ -27,21 +27,24 @@ type accountHandler struct {
 // @Produce  json
 // @Param   account  body  dto.AccountRequest  true  "Create Account"
 // @Success 201 {object} dto.AccountResponse
+// @Failure 500 {object} Error
+// @Failure 400 {object} Error
+// @Failure 409 {object} Error
 // @Router /accounts [post]
 func (a accountHandler) Create(w http.ResponseWriter, r *http.Request) {
 	var req dto.AccountRequest
 	if err := FromJSON(&req, r.Body); err != nil {
-		Response(w, http.StatusInternalServerError, errors.New("internal server error"))
+		ErrorResponse(w, http.StatusInternalServerError, errors.New("internal server error").Error())
 		return
 	}
 	account := model.Account{DocumentNumber: req.DocumentNumber}
 	if err := account.IsValid(); err != nil {
-		Response(w, http.StatusBadRequest, errors.New("document_number required").Error())
+		ErrorResponse(w, http.StatusBadRequest, errors.New("document_number required").Error())
 		return
 	}
 	create, err := a.accountService.Create(account)
 	if err != nil {
-		Response(w, http.StatusConflict, err.Error())
+		ErrorResponse(w, http.StatusConflict, err.Error())
 		return
 	}
 	Response(w, http.StatusCreated, dto.AccountResponse{ID: create.ID, DocumentNumber: create.DocumentNumber})
@@ -54,17 +57,19 @@ func (a accountHandler) Create(w http.ResponseWriter, r *http.Request) {
 // @Produce  json
 // @Param   id  path      int  true  "Account ID"
 // @Success 200 {object} dto.AccountResponse
+// @Failure 500 {object} Error
+// @Failure 404 {object} Error
 // @Router /accounts/{id} [get]
 func (a accountHandler) GetById(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {
-		Response(w, http.StatusBadRequest, err.Error())
+		ErrorResponse(w, http.StatusBadRequest, err.Error())
 		return
 	}
 	acc, err := a.accountService.GetById(id)
 	if err != nil {
-		Response(w, http.StatusNotFound, err.Error())
+		ErrorResponse(w, http.StatusNotFound, err.Error())
 		return
 	}
 	Response(w, http.StatusOK, dto.AccountResponse{ID: acc.ID, DocumentNumber: acc.DocumentNumber})

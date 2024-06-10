@@ -32,6 +32,11 @@ definitions:
       transaction_id:
         type: integer
     type: object
+  internal_handler.Error:
+    properties:
+      message:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -58,6 +63,18 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/github_com_hameedhub_pismo_internal_handler_dto.AccountResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/internal_handler.Error'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/internal_handler.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_handler.Error'
       summary: Create a new account
       tags:
       - accounts
@@ -77,6 +94,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/github_com_hameedhub_pismo_internal_handler_dto.AccountResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/internal_handler.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_handler.Error'
       summary: Get an account by ID
       tags:
       - accounts
@@ -99,6 +124,10 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/github_com_hameedhub_pismo_internal_handler_dto.TransactionResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/internal_handler.Error'
       summary: Create a new transaction
       tags:
       - transactions

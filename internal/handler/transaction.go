@@ -23,16 +23,17 @@ type transactionHandler struct {
 // @Produce  json
 // @Param   account  body      dto.TransactionRequest  true  "Create Transaction"
 // @Success 201 {object} dto.TransactionResponse
+// @Failure 400 {object} Error
 // @Router /transactions [post]
 func (t transactionHandler) Create(w http.ResponseWriter, r *http.Request) {
 	var req dto.TransactionRequest
 	if err := FromJSON(&req, r.Body); err != nil {
-		Response(w, http.StatusBadRequest, err.Error())
+		ErrorResponse(w, http.StatusBadRequest, err.Error())
 		return
 	}
 	trans, err := t.transactionService.Create(model.Transaction{AccountId: req.AccountId, OperationTypeId: req.OperationTypeId, Amount: req.Amount})
 	if err != nil {
-		Response(w, http.StatusBadRequest, err.Error())
+		ErrorResponse(w, http.StatusBadRequest, err.Error())
 		return
 	}
 	Response(w, http.StatusCreated, dto.TransactionResponse{ID: trans.ID, AccountId: trans.AccountId, OperationTypeId: trans.OperationTypeId, Amount: trans.Amount})
